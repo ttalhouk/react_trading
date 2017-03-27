@@ -1,44 +1,45 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchQuote } from './actions/index';
+import { buyStock } from './actions/index';
 
-class SearchBar extends Component {
+class StockInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      term: ''
+      shares: null
     };
     this.onInputChange = this.onInputChange.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(event) {
-    this.setState({term: event.target.value});
+    this.setState({shares: event.target.value});
   }
 
   onFormSubmit(event) {
     event.preventDefault();
-    // go fetch quote data
-    // from action creator
-    this.props.fetchQuote(this.state.term);
-    this.setState({term: ''});
+
+    this.props.buyStock(this.state.shares);
+    this.setState({shares: ''});
   }
 
   render() {
     return(
+
+
       <form
         onSubmit={this.onFormSubmit}
         className="input-group">
         <input
-          placeholder="Enter Stock Symbol"
+          placeholder="Enter Number of Shares"
+          type="number"
           className="form-control"
-          value={this.state.term}
+          value={this.state.shares}
           onChange={this.onInputChange}
-
           />
         <span className="input-group-btn">
-          <button type="submit" className="btn btn-secondary">Search</button>
+          <button type="submit" className="btn btn-outline-primary">Buy</button>
         </span>
       </form>
     );
@@ -46,7 +47,7 @@ class SearchBar extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchQuote }, dispatch);
+  return bindActionCreators({ buyStock }, dispatch);
 }
 
 export default connect(null,mapDispatchToProps)(SearchBar);
